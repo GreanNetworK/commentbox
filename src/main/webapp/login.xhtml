@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>BDC : CommentBox</title>
+        <link rel="stylesheet" type="text/css" href="resources/css/style.css" />
+    </h:head>
+    <h:body>
+        <div align="center">
+            <div style="width:300px;" align="left">
+                <form name='f' action='j_spring_security_check' method='POST'>
+                    <p:panel id="panel" header="Comment Box Login" style="margin-bottom:10px;">  
+                        <p:messages id="messages" />  
+                        <h:panelGrid columns="2">  
+                            <h:outputLabel for="j_username" value="Username: " />  
+                            <p:inputText  id="j_username" value="" required="true" />  
+
+                            <h:outputLabel for="j_password" value="Password: " />  
+                            <p:password id="j_password" value="" required="true"/>  
+
+                        </h:panelGrid>
+                        <div align="center">
+                            <p:commandButton type="submit" onclick="f.submit();" value="Login" />
+                        </div>
+                    </p:panel> 
+                </form>
+            </div>
+        </div>
+    </h:body>
+</html>
+

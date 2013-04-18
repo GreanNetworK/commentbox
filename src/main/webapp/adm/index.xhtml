@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>BDC : CommentBox</title>
+        <link rel="stylesheet" type="text/css" href="resources/css/style.css" />
+    </h:head>
+    <h:body>
+        <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>  
+        <p:dialog modal="true" widgetVar="statusDialog" header="Status"   
+                  draggable="false" closable="false">  
+            <p:graphicImage value="resources/images/ajax-loader.gif" />  
+        </p:dialog> 
+        
+        <div align="center">
+            <div style="width:645px;" align="left">
+                <p:panel header="BDC Comment Box : Control Panel" style="width:638px">
+                    <div align="right" style="margin-bottom: 5px">
+                        <h:form>
+                            <p:commandButton type="button" value="Logout" icon="ui-icon-power" ajax="false" onclick="window.location = '../logout'" />
+                        </h:form>
+                    </div>
+                    <p:tabView>
+                        <p:tab title="Recipient Manage">
+                            <h:form>
+                                <p:panelGrid columns="3">
+                                    <p:outputLabel value="Email" />
+                                    <p:inputText id="newEmail" value="#{adminIndexBean.newEmail}" style="width:408px" />
+                                    <p:commandButton value="Add" icon="ui-icon-plus" actionListener="#{adminIndexBean.addEmail()}" update="newEmail,emailTableList" />
+                                </p:panelGrid>
+
+                                <br />
+
+                                <p:dataTable id="emailTableList" value="#{adminIndexBean.emails}" var="email">
+                                    <p:column headerText="EMAIL" width="470">
+                                        <p:outputLabel value="#{email.email}" />
+                                    </p:column>
+                                    <p:column headerText="DELETE" style="text-align: center">
+                                        <p:commandButton icon="ui-icon-circle-close" actionListener="#{adminIndexBean.removeEmail(email)}" update="emailTableList" />
+                                    </p:column>
+                                </p:dataTable>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="User Manage">
+                            <h:form>
+                                <div align="right">
+                                    <p:commandButton value="Add User" icon="ui-icon-extlink" type="button" onclick="addUserDlg.show()" />
+                                </div>
+
+                                <br />
+
+                                <p:dataTable id="userTableList" value="#{userManageBean.users}" var="user">
+                                    <p:column headerText="User" width="300">
+                                        <p:outputLabel value="#{user.username}" />
+                                    </p:column>
+                                    <p:column headerText="Email">
+                                        <p:outputLabel value="#{user.email}" />
+                                    </p:column>
+                                </p:dataTable>
+
+                                <p:growl id="messages" showDetail="true"/>  
+
+                                <p:dialog header="Add User" widgetVar="addUserDlg" resizable="false">
+                                    <p:panelGrid columns="2">
+                                        <p:outputLabel value="Username :" />
+                                        <p:inputText style="width: 150px" value="#{userManageBean.username}" />
+
+                                        <p:outputLabel value="Email :" />
+                                        <p:inputText style="width: 150px" value="#{userManageBean.email}" />
+                                    </p:panelGrid>
+
+                                    <div align="center" style="margin-top: 10px;">
+                                        <p:commandButton value="Add" actionListener="#{userManageBean.addNewUser()}" update="userTableList,messages" oncomplete="addUserDlg.hide()" />
+                                    </div>
+                                </p:dialog>
+                            </h:form>
+                        </p:tab>
+                    </p:tabView>
+                </p:panel>
+            </div>
+        </div>
+    </h:body>
+</html>
+

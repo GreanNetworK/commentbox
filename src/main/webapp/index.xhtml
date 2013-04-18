@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>BDC : CommentBox</title>
+        <h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+        <link rel="stylesheet" type="text/css" href="resources/css/style.css" />
+    </h:head>
+    <h:body>
+        <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>  
+
+        <p:dialog modal="true" widgetVar="statusDialog" header="Status"   
+                  draggable="false" closable="false">  
+            <p:graphicImage value="resources/images/ajax-loader.gif" />  
+        </p:dialog> 
+        
+        <div align="center">
+            <div style="width:645px;" align="left">
+                <h:form enctype="multipart/form-data">
+                    <p:panel header="BDC Comment Box" style="width:638px">
+                        <p:editor id="editor" value="#{indexBean.mailMessage}" width="610" height="250" />
+                        <br />
+                        <p:fileUpload fileUploadListener="#{indexBean.handleFileUpload}"  
+                                      label="Attachment"
+                                      mode="advanced"  
+                                      update="messages,fileUploadList"  
+                                      auto="true"
+                                      multiple="true"
+                                      showButtons="true"
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/"
+                                      style="border:none"/>  
+                        <p:growl id="messages" showDetail="true"/>                
+                        <p:dataTable id="fileUploadList" value="#{indexBean.uploadedFiles}" var="file" emptyMessage="no attachment.">
+                            <p:column headerText="File Name" width="480">
+                                <h:outputText value="#{file.fileName}" />
+                            </p:column>
+                            <p:column headerText="Remove" style="text-align: center">
+                                <p:commandButton icon="ui-icon-circle-close" actionListener="#{indexBean.removeAttachment(file)}" update="fileUploadList" />
+                            </p:column>
+                        </p:dataTable>
+
+                        <br />
+
+                        <p:commandButton id="send" widgetVar="send" value="Send" icon="ui-icon-mail-closed" actionListener="#{indexBean.send()}" update="editor,fileUploadList"/>  
+                    </p:panel>
+                </h:form>
+            </div>
+        </div>
+    </h:body>
+</html>
+

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+    
+    <http use-expressions="true" auto-config="true">
+        <intercept-url pattern="/adm/*" access="isAuthenticated()" />
+        <intercept-url pattern="/adm/**" access="isAuthenticated()"/>
+        <form-login login-page="/login.xhtml" default-target-url="/adm/index.xhtml" always-use-default-target="true" authentication-failure-url="/login.xhtml" />
+        <logout logout-url="/logout" invalidate-session="true" logout-success-url="/login.xhtml"/>
+        <remember-me use-secure-cookie="true" key="commmentbox.shipco.com"/>
+    </http>
+    
+    <beans:bean id="authenProvider" class="com.shipco.commentbox.authenticate.UserDetailServiceImpl" />
+    <authentication-manager alias="authenManager">
+        <authentication-provider user-service-ref="authenProvider" />
+    </authentication-manager>
+
+
+</beans:beans>
