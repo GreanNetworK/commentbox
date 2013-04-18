@@ -10,7 +10,11 @@ root {
     display: block;
 }
 
-.ui-widget, .ui-widget .ui-widget,.ui-state-default,.ui-button-text {
-    font-size: 90% !important;
+.ui-widget {
+    font-size: 88% !important;
+}
+
+.ui-inputtext{
+    font-size: 100% !important;
 }
 
