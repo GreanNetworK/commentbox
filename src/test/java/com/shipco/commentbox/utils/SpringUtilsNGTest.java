@@ -39,44 +39,35 @@ public class SpringUtilsNGTest extends AbstractTestNGSpringContextTests{
     /**
      * Test of getBean method, of class SpringUtils.
      */
-    //@Test
+    @Test
     public void testGetBean_Class() {
         System.out.println("getBean");
-        Class<?> type = null;
-        Object expResult = null;
+        Class<?> type = SpringUtils.class;
         Object result = SpringUtils.getBean(type);
-        assertEquals(result, expResult);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertNotNull(result);
     }
 
     /**
      * Test of getBean method, of class SpringUtils.
      */
-    //@Test
+    @Test
     public void testGetBean_String_Class() {
         System.out.println("getBean");
-        String name = "";
-        Class<?> type = null;
-        Object expResult = null;
+        String name = "springUtils";
+        Class<?> type = SpringUtils.class;
         Object result = SpringUtils.getBean(name, type);
-        assertEquals(result, expResult);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertNotNull(result);
     }
 
     /**
      * Test of getBean method, of class SpringUtils.
      */
-    //@Test
+    @Test
     public void testGetBean_String() {
         System.out.println("getBean");
-        String name = "";
-        Object expResult = null;
-        Object result = SpringUtils.getBean(name);
-        assertEquals(result, expResult);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        String name = "springUtils";
+        Object bean = SpringUtils.getBean(name);
+        assertNotNull(bean);
     }
 
     /**
