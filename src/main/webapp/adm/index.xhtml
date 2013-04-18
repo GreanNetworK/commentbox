@@ -13,7 +13,7 @@
                   draggable="false" closable="false">  
             <p:graphicImage value="resources/images/ajax-loader.gif" />  
         </p:dialog> 
-        
+
         <div align="center">
             <div style="width:645px;" align="left">
                 <p:panel header="BDC Comment Box : Control Panel" style="width:638px">
@@ -25,10 +25,11 @@
                     <p:tabView>
                         <p:tab title="Recipient Manage">
                             <h:form>
+                                <p:growl id="messages" showDetail="true"/>  
                                 <p:panelGrid columns="3">
                                     <p:outputLabel value="Email" />
                                     <p:inputText id="newEmail" value="#{adminIndexBean.newEmail}" style="width:408px" />
-                                    <p:commandButton value="Add" icon="ui-icon-plus" actionListener="#{adminIndexBean.addEmail()}" update="newEmail,emailTableList" />
+                                    <p:commandButton value="Add" icon="ui-icon-plus" actionListener="#{adminIndexBean.addEmail()}" update="newEmail,emailTableList,messages" />
                                 </p:panelGrid>
 
                                 <br />
@@ -45,6 +46,7 @@
                         </p:tab>
                         <p:tab title="User Manage">
                             <h:form>
+                                <p:growl id="messages" showDetail="true"/>  
                                 <div align="right">
                                     <p:commandButton value="Add User" icon="ui-icon-extlink" type="button" onclick="addUserDlg.show()" />
                                 </div>
@@ -60,16 +62,14 @@
                                     </p:column>
                                 </p:dataTable>
 
-                                <p:growl id="messages" showDetail="true"/>  
-
-                                <p:dialog header="Add User" widgetVar="addUserDlg" resizable="false">
-                                    <p:panelGrid columns="2">
+                                <p:dialog header="Add User" widgetVar="addUserDlg" resizable="false" draggable="false">
+                                    <h:panelGrid columns="2">
                                         <p:outputLabel value="Username :" />
                                         <p:inputText style="width: 150px" value="#{userManageBean.username}" />
 
                                         <p:outputLabel value="Email :" />
                                         <p:inputText style="width: 150px" value="#{userManageBean.email}" />
-                                    </p:panelGrid>
+                                    </h:panelGrid>
 
                                     <div align="center" style="margin-top: 10px;">
                                         <p:commandButton value="Add" actionListener="#{userManageBean.addNewUser()}" update="userTableList,messages" oncomplete="addUserDlg.hide()" />

@@ -4,6 +4,7 @@
  */
 package com.shipco.commentbox.service.impl;
 
+import com.shipco.commentbox.exception.WrongValueException;
 import com.shipco.commentbox.model.Email;
 import com.shipco.commentbox.repository.EmailRepository;
 import com.shipco.commentbox.service.EmailService;
@@ -52,7 +53,11 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public Email addEmail(Email email) {
-        return emailRepository.addEmail(email);
+    public Email addEmail(Email email) throws WrongValueException{
+        if ("".equals(email.getEmail())) {
+            throw new WrongValueException("Email not be empty.");
+        }else{
+            return emailRepository.addEmail(email);
+        }
     }
 }

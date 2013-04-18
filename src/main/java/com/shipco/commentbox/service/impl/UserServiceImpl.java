@@ -4,7 +4,7 @@
  */
 package com.shipco.commentbox.service.impl;
 
-import com.shipco.commentbox.authenticate.DuplicateUsernameException;
+import com.shipco.commentbox.exception.DuplicateUsernameException;
 import com.shipco.commentbox.model.User;
 import com.shipco.commentbox.repository.UserRepository;
 import com.shipco.commentbox.service.UserService;
