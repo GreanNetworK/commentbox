@@ -4,12 +4,16 @@
  */
 package com.shipco.commentbox.service.impl;
 
+import com.shipco.commentbox.authenticate.DuplicateUsernameException;
 import com.shipco.commentbox.model.User;
 import com.shipco.commentbox.repository.UserRepository;
 import com.shipco.commentbox.service.UserService;
 import com.shipco.commentbox.utils.EmailUtils;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,21 +37,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean addNewUser(String username, String email) {
+    public User addNewUser(String username, String email) throws DuplicateUsernameException {
         User user = findByUsername(username);
         if (user == null) {
             user = new User();
             user.setUsername(username);
             user.setPassword(generatePassword());
             user.setEmail(email);
-            sendEmailForNewUser(user);
-            return true;
+            User addUser = userRepository.addUser(user);
+            return addUser;
         } else {
-            return false;
+            throw new DuplicateUsernameException();
         }
     }
 
-    private void sendEmailForNewUser(User user) {
+    @Override
+    public void sendEmailForNewUser(User user) {
         StringBuilder builder = new StringBuilder();
         builder.append("Hi,<br>");
         builder.append("you have invite for <b>Comment Box Control Panel</b><br><br>");

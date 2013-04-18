@@ -4,12 +4,14 @@
  */
 package com.shipco.commentbox.view;
 
+import com.shipco.commentbox.authenticate.DuplicateUsernameException;
 import com.shipco.commentbox.model.User;
 import com.shipco.commentbox.service.UserService;
-import com.shipco.commentbox.utils.EmailUtils;
 import com.shipco.commentbox.utils.SpringUtils;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -37,11 +39,12 @@ public class UserManageBean implements Serializable {
     }
 
     public void addNewUser() {
-        boolean addNewUser = userService.addNewUser(username, email);
-        if (addNewUser) {
+        try {
+            User user = userService.addNewUser(username, email);
+            userService.sendEmailForNewUser(user);
             users = userService.getAllUser();
-        } else {
-            popupMessage("Add Failed", "Duplicate username found.");
+        } catch (DuplicateUsernameException ex) {
+            popupMessage("Add Failed", ex.getMessage());
         }
     }
 
