@@ -11,15 +11,23 @@
     <h:body>
         <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>  
 
-        <p:dialog modal="true" widgetVar="statusDialog" header="Status"   
-                  draggable="false" closable="false">  
+        <p:dialog modal="true" widgetVar="statusDialog" header="Status" resizable="false" draggable="false" closable="false">  
             <p:graphicImage value="resources/images/ajax-loader.gif" />  
         </p:dialog> 
-        
+
         <div align="center">
             <div style="width:645px;" align="left">
                 <h:form enctype="multipart/form-data">
+                    <p:growl id="messages" showDetail="true"/>    
                     <p:panel header="BDC Comment Box" style="width:638px">
+                        <p:panel style="margin-bottom: 5px;">
+                            <b>We know that we are not perfect but we are trying our best to make BDC a pleasant place to work.<br />
+                                Please let us know if you have any comments about how things go in our place.<br />
+                                Suggestions and Ideas are always welcome.<br /><br />
+
+                                Please rest assure that all messages will be anonymous and they will always be read.</b>
+                        </p:panel>
+
                         <p:editor id="editor" value="#{indexBean.mailMessage}" width="610" height="250" />
                         <br />
                         <p:fileUpload fileUploadListener="#{indexBean.handleFileUpload}"  
@@ -30,8 +38,7 @@
                                       multiple="true"
                                       showButtons="true"
                                       allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/"
-                                      style="border:none"/>  
-                        <p:growl id="messages" showDetail="true"/>                
+                                      style="border:none"/>              
                         <p:dataTable id="fileUploadList" value="#{indexBean.uploadedFiles}" var="file" emptyMessage="no attachment.">
                             <p:column headerText="File Name" width="480">
                                 <h:outputText value="#{file.fileName}" />
@@ -43,7 +50,16 @@
 
                         <br />
 
-                        <p:commandButton id="send" widgetVar="send" value="Send" icon="ui-icon-mail-closed" actionListener="#{indexBean.send()}" update="editor,fileUploadList"/>  
+                        <p:commandButton id="send" widgetVar="send" value="Send" icon="ui-icon-mail-closed" actionListener="#{indexBean.send()}" update="editor,fileUploadList,notifyMessage" oncomplete="confirmation.show();" />  
+
+                        <p:dialog header="BDC Comment Box" id="confirmDialog" modal="true" closable="false" resizable="false" widgetVar="confirmation">
+                            <div style="margin-bottom: 5px;">
+                                <h:outputText id="notifyMessage" value="#{indexBean.notifyMessaage}" escape="false" />
+                            </div>
+                            <div align="center">
+                                <p:commandButton type="button" value="OK" onclick="confirmation.hide();" />
+                            </div>
+                        </p:dialog>
                     </p:panel>
                 </h:form>
             </div>
