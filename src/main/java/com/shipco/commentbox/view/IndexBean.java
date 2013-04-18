@@ -26,6 +26,7 @@ public class IndexBean implements Serializable {
 
     private String mailMessage;
     private List<UploadedFile> uploadedFiles;
+    private String notifyMessaage;
 
     @PostConstruct
     public void init() {
@@ -38,6 +39,14 @@ public class IndexBean implements Serializable {
 
     public void setMailMessage(String mailMessage) {
         this.mailMessage = mailMessage;
+    }
+
+    public String getNotifyMessaage() {
+        return notifyMessaage;
+    }
+
+    public void setNotifyMessaage(String notifyMessaage) {
+        this.notifyMessaage = notifyMessaage;
     }
 
     public List<UploadedFile> getUploadedFiles() {
@@ -55,10 +64,19 @@ public class IndexBean implements Serializable {
     }
 
     public void send() {
-        EmailUtils.sendCommentBoxMail(mailMessage, uploadedFiles);
+        if (mailMessage.equals("")) {
+            popupMessage("Message", "Please write comment box.");
+            notifyMessaage = "Please write comment box.";
+        } else {
+            EmailUtils.sendCommentBoxMail(mailMessage, uploadedFiles);
+            notifyMessaage = "Your comment has been sent to the Responsible Team.<br />"
+                    + "We will try our best to make our office a better place to work.<br />"
+                    + "Thanks for your contribution.";
+            
+            popupMessage("Successful", "mail has been sent.");
+        }
         mailMessage = new String();
         uploadedFiles.clear();
-        popupMessage("Successful", "mail has been sent.");
     }
 
     private void popupMessage(String summary, String detail) {
