@@ -14,5 +14,5 @@ import java.util.List;
 public interface UserService {
     public User findByUsername(String username);
     public List<User> getAllUser();
-    public User addNewUser(String username,String email);
+    public boolean addNewUser(String username,String email);
 }

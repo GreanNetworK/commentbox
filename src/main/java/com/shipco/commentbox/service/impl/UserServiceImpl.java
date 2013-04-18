@@ -7,6 +7,7 @@ package com.shipco.commentbox.service.impl;
 import com.shipco.commentbox.model.User;
 import com.shipco.commentbox.repository.UserRepository;
 import com.shipco.commentbox.service.UserService;
+import com.shipco.commentbox.utils.EmailUtils;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,17 +33,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addNewUser(String username, String email) {
+    public boolean addNewUser(String username, String email) {
         User user = findByUsername(username);
         if (user == null) {
             user = new User();
             user.setUsername(username);
             user.setPassword(generatePassword());
             user.setEmail(email);
-            return userRepository.addUser(user);
-        }else{
-            return null;
+            sendEmailForNewUser(user);
+            return true;
+        } else {
+            return false;
         }
+    }
+
+    private void sendEmailForNewUser(User user) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Hi,<br>");
+        builder.append("you have invite for <b>Comment Box Control Panel</b><br><br>");
+        builder.append("<u><b>your account detail</b></u><br>");
+        builder.append("URL : <a href='http://172.16.73.50:8080/commentbox/login.xhtml'>http://172.16.73.50:8080/commentbox/login.xhtml</a><br>");
+        builder.append("Username : <b>");
+        builder.append(user.getUsername());
+        builder.append("</b><br>");
+        builder.append("Password : <b>");
+        builder.append(user.getPassword());
+        builder.append("</b><br>");
+        EmailUtils.sendEmailMessage("Welcome to Comment Box!!!", builder.toString(), user.getEmail());
     }
 
     private String generatePassword() {

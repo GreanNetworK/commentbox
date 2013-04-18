@@ -37,21 +37,9 @@ public class UserManageBean implements Serializable {
     }
 
     public void addNewUser() {
-        User addNewUser = userService.addNewUser(username, email);
-        if (addNewUser != null) {
+        boolean addNewUser = userService.addNewUser(username, email);
+        if (addNewUser) {
             users = userService.getAllUser();
-            StringBuilder builder = new StringBuilder();
-            builder.append("Hi,<br>");
-            builder.append("you have invite for <b>Comment Box Control Panel</b><br><br>");
-            builder.append("<u><b>your account detail</b></u><br>");
-            builder.append("URL : <a href='http://172.16.73.50:8080/commentbox/login.xhtml'>http://172.16.73.50:8080/commentbox/login.xhtml</a><br>");
-            builder.append("Username : <b>");
-            builder.append(addNewUser.getUsername());
-            builder.append("</b><br>");
-            builder.append("Password : <b>");
-            builder.append(addNewUser.getPassword());
-            builder.append("</b><br>");
-            EmailUtils.sendEmailMessage("Welcome to Comment Box!!!", builder.toString(), email);
         } else {
             popupMessage("Add Failed", "Duplicate username found.");
         }
