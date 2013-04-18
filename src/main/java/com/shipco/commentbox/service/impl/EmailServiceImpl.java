@@ -52,7 +52,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void addEmail(Email email) {
-        emailRepository.addEmail(email);
+    public Email addEmail(Email email) {
+        return emailRepository.addEmail(email);
     }
 }

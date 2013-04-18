@@ -10,10 +10,7 @@ import com.shipco.commentbox.repository.UserRepository;
 import com.shipco.commentbox.service.UserService;
 import com.shipco.commentbox.utils.EmailUtils;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 /**

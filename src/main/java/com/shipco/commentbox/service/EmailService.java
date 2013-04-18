@@ -16,5 +16,5 @@ public interface EmailService {
     public List<Email> getAllEmail();
     public List<InternetAddress> getAllEmailInternetAddress();
     public void removeEmail(Email email);
-    public void addEmail(Email email);
+    public Email addEmail(Email email);
 }

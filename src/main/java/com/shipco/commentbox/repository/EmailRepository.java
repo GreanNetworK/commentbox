@@ -14,5 +14,5 @@ import java.util.List;
 public interface EmailRepository {
     public List<Email> getAllEmail();
     public void removeEmail(Email email);
-    public void addEmail(Email email);
+    public Email addEmail(Email email);
 }

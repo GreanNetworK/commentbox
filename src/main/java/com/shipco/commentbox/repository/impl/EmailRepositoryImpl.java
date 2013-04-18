@@ -35,7 +35,9 @@ public class EmailRepositoryImpl implements EmailRepository{
     }
     
     @Override
-    public void addEmail(Email email){
+    public Email addEmail(Email email){
         em.persist(email);
+        em.flush();
+        return email;
     }
 }
