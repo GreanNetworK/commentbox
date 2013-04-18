@@ -38,6 +38,7 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public User addUser(User user) {
         em.persist(user);
+        em.flush();
         return user;
     }
 }
