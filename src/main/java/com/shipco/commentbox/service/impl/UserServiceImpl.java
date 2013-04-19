@@ -5,6 +5,7 @@
 package com.shipco.commentbox.service.impl;
 
 import com.shipco.commentbox.exception.DuplicateUsernameException;
+import com.shipco.commentbox.exception.WrongValueException;
 import com.shipco.commentbox.model.User;
 import com.shipco.commentbox.repository.UserRepository;
 import com.shipco.commentbox.service.UserService;
@@ -34,7 +35,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addNewUser(String username, String email) throws DuplicateUsernameException {
+    public User addNewUser(String username, String email) throws DuplicateUsernameException, WrongValueException {
+        if("".equals(username) || "".equals(email)){
+            throw new WrongValueException("Textbox could not be null.");
+        }
+        
         User user = findByUsername(username);
         if (user == null) {
             user = new User();

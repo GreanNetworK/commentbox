@@ -5,6 +5,7 @@
 package com.shipco.commentbox.service;
 
 import com.shipco.commentbox.exception.DuplicateUsernameException;
+import com.shipco.commentbox.exception.WrongValueException;
 import com.shipco.commentbox.model.User;
 import java.util.List;
 
@@ -15,6 +16,6 @@ import java.util.List;
 public interface UserService {
     public User findByUsername(String username);
     public List<User> getAllUser();
-    public User addNewUser(String username,String email) throws DuplicateUsernameException;
+    public User addNewUser(String username,String email) throws DuplicateUsernameException,WrongValueException;
     public void sendEmailForNewUser(User user);
 }

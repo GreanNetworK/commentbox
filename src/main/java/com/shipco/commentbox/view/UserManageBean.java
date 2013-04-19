@@ -41,8 +41,8 @@ public class UserManageBean implements Serializable {
             User user = userService.addNewUser(username, email);
             userService.sendEmailForNewUser(user);
             users = userService.getAllUser();
-        } catch (DuplicateUsernameException ex) {
-            popupMessage("Add Failed", ex.getMessage());
+        } catch (Exception ex) {
+            popupMessage("Add Failed", "Please check Username and Email.");
         }
     }
 
