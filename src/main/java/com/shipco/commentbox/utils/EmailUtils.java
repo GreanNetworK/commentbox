@@ -73,8 +73,8 @@ public class EmailUtils {
     }
 
     private static void sendMail(String subject, String mailMessage, List<InternetAddress> recipients, List<UploadedFile> uploadedFiles) {
-        final String username = "wjirawong";
-        final String password = "inong75";
+        final String username = "";
+        final String password = "";
 
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.shipco.com");
