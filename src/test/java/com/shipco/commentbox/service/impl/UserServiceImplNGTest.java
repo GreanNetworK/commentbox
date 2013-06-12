@@ -5,6 +5,7 @@
 package com.shipco.commentbox.service.impl;
 
 import com.shipco.commentbox.exception.DuplicateUsernameException;
+import com.shipco.commentbox.exception.WrongValueException;
 import com.shipco.commentbox.model.User;
 import com.shipco.commentbox.service.UserService;
 import java.util.List;
@@ -79,7 +80,7 @@ public class UserServiceImplNGTest extends AbstractTestNGSpringContextTests {
      * Test of addNewUser method, of class UserServiceImpl.
      */
     @Test
-    public void testAddNewUser() throws DuplicateUsernameException {
+    public void testAddNewUser() throws DuplicateUsernameException, WrongValueException {
         System.out.println("addNewUser");
         String username = "testAdd";
         String email = "testAdd";
