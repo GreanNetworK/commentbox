@@ -4,6 +4,7 @@
  */
 package com.shipco.commentbox.service.impl;
 
+import com.shipco.commentbox.exception.WrongValueException;
 import com.shipco.commentbox.model.Email;
 import com.shipco.commentbox.service.EmailService;
 import java.util.List;
@@ -90,7 +91,7 @@ public class EmailServiceImplNGTest extends AbstractTestNGSpringContextTests{
      * Test of addEmail method, of class EmailServiceImpl.
      */
     @Test
-    public void testAddEmail() {
+    public void testAddEmail() throws WrongValueException {
         System.out.println("addEmail");
         Email testEmail = new Email();
         String strEmail = "xxx@xxx.com";
