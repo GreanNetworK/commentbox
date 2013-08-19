@@ -7,9 +7,11 @@ package com.shipco.commentbox.model;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -23,8 +25,9 @@ public class User implements UserDetails, Serializable {
 
     @Id
     private String username;
-    private String password;
     private String email;
+    private Collection<? extends GrantedAuthority> authorities;
+    
 
     @Override
     public String getUsername() {
@@ -34,25 +37,20 @@ public class User implements UserDetails, Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
+  
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+		this.authorities = authorities;
+	}
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Override
+	@Override
     public int hashCode() {
         int hash = 7;
         hash = 59 * hash + (this.username != null ? this.username.hashCode() : 0);
@@ -98,4 +96,9 @@ public class User implements UserDetails, Serializable {
     public boolean isEnabled() {
         return true;
     }
+
+	@Override
+	public String getPassword() {
+		return null;
+	}
 }

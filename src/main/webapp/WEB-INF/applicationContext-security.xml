@@ -1,23 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/security"
-       xmlns:beans="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
-    
-    <http use-expressions="true" auto-config="true">
-        <intercept-url pattern="/adm/*" access="isAuthenticated()" />
-        <intercept-url pattern="/adm/**" access="isAuthenticated()"/>
-        <form-login login-page="/login.xhtml" default-target-url="/adm/index.xhtml" always-use-default-target="true" authentication-failure-url="/login.xhtml" />
-        <logout logout-url="/logout" invalidate-session="true" logout-success-url="/login.xhtml"/>
-        <remember-me use-secure-cookie="true" key="commmentbox.shipco.com"/>
-    </http>
-    
-    <beans:bean id="authenProvider" class="com.shipco.commentbox.authenticate.UserDetailServiceImpl" />
-    <authentication-manager alias="authenManager">
-        <authentication-provider user-service-ref="authenProvider" />
-    </authentication-manager>
 
+	<http use-expressions="true" auto-config="true">
+		<intercept-url pattern="/adm/*" access="isAuthenticated()" />
+		<intercept-url pattern="/adm/**" access="isAuthenticated()" />
+		<form-login login-page="/login.xhtml" default-target-url="/adm/index.xhtml"
+			always-use-default-target="true" authentication-failure-url="/login.xhtml" />
+		<logout logout-url="/logout" invalidate-session="true"
+			logout-success-url="/login.xhtml" />
+		<remember-me use-secure-cookie="true" key="commmentbox.shipco.com" />
+	</http>
 
+	<beans:bean id="contextSource"
+		class="org.springframework.security.ldap.DefaultSpringSecurityContextSource">
+		<beans:constructor-arg value="ldap://ldap.shipco.com/dc=shipco,dc=com" />
+		<beans:property name="userDn"
+			value="uid=webapps-rw,ou=Infrastructure,ou=People,dc=shipco,dc=com" />
+		<beans:property name="password" value="xEoq80VR" />
+	</beans:bean>
+
+	<!-- <beans:bean id="userDetailsService" -->
+	<!-- class="com.shipco.commentbox.authenticate.UserDetailServiceImpl" /> -->
+
+	<beans:bean id="ldapAuthoritiesPopulator"
+		class="com.shipco.commentbox.authenticate.LdapAuthenPopulater" />
+
+	<beans:bean id="userSearch"
+		class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
+		<beans:constructor-arg index="0">
+			<beans:value></beans:value>
+		</beans:constructor-arg>
+		<beans:constructor-arg index="1">
+			<beans:value>uid={0}</beans:value>
+		</beans:constructor-arg>
+		<beans:constructor-arg index="2">
+			<beans:ref local="contextSource" />
+		</beans:constructor-arg>
+		<beans:property name="searchSubtree" value="true" />
+	</beans:bean>
+
+	<beans:bean id="ldapUserDetailsService"
+		class="org.springframework.security.ldap.userdetails.LdapUserDetailsService">
+		<beans:constructor-arg index="0">
+			<beans:ref local="userSearch" />
+		</beans:constructor-arg>
+		<beans:constructor-arg index="1">
+			<beans:ref local="ldapAuthoritiesPopulator" />
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="authenProvider"
+		class="org.springframework.security.ldap.authentication.LdapAuthenticationProvider">
+		<beans:constructor-arg>
+			<beans:bean
+				class="org.springframework.security.ldap.authentication.BindAuthenticator">
+				<beans:constructor-arg ref="contextSource" />
+				<beans:property name="userSearch" ref="userSearch" />
+
+			</beans:bean>
+		</beans:constructor-arg>
+
+		<beans:constructor-arg>
+			<beans:ref local="ldapAuthoritiesPopulator" />
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<authentication-manager alias="authenManager">
+		<authentication-provider ref="authenProvider" />
+	</authentication-manager>
+
+	<beans:bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
+		<beans:constructor-arg ref="contextSource" />
+		<beans:property name="ignorePartialResultException"
+			value="true" />
+	</beans:bean>
 </beans:beans>

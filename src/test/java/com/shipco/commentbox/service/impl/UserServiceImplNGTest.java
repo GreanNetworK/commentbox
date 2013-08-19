@@ -61,7 +61,6 @@ public class UserServiceImplNGTest extends AbstractTestNGSpringContextTests {
         User result = userService.findByUsername(USERNAME);
         assertNotNull(result);
         assertEquals(result.getUsername(), USERNAME);
-        assertEquals(result.getPassword().length(), 8);
         assertEquals(result.getEmail(), EMAIL);
     }
 
@@ -88,6 +87,5 @@ public class UserServiceImplNGTest extends AbstractTestNGSpringContextTests {
         assertNotNull(user);
         assertEquals(user.getUsername(), username);
         assertEquals(user.getEmail(), email);
-        assertEquals(user.getPassword().length(), 8);
     }
 }

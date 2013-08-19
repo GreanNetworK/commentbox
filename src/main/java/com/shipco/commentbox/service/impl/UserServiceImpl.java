@@ -10,8 +10,13 @@ import com.shipco.commentbox.model.User;
 import com.shipco.commentbox.repository.UserRepository;
 import com.shipco.commentbox.service.UserService;
 import com.shipco.commentbox.utils.EmailUtils;
+
+import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,8 +49,12 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             user = new User();
             user.setUsername(username);
-            user.setPassword(generatePassword());
             user.setEmail(email);
+            
+            List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+            user.setAuthorities(grantedAuthorities);
+            
             User addUser = userRepository.addUser(user);
             return addUser;
         } else {
